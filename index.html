@@ -2,16 +2,516 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelvin Njoroge — Full-Stack Developer</title>
+    <meta
+      name="description"
+      content="Kelvin Njoroge is a Full-Stack Developer specializing in HTML, CSS, JavaScript, React, and Python. Available for freelance work."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <title>kelvin-portfolio</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- ============================================
+    SKIP LINK — Accessibility
+    ============================================ -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- ============================================
+    NAVIGATION
+    ============================================ -->
+    <header class="navbar" role="banner" aria-label="Main navigation">
+      <nav class="nav-container" aria-label="Primary navigation">
+        <a href="#" class="nav-logo" aria-label="Kelvin Njoroge home">
+          <span class="nav-logo-icon">&lt;/&gt;</span>
+          <span>Kelvin</span>
+        </a>
+
+        <ul class="nav-links" role="menubar">
+          <li role="none"><a href="#home" role="menuitem">Home</a></li>
+          <li role="none"><a href="#about" role="menuitem">About</a></li>
+          <li role="none"><a href="#skills" role="menuitem">Skills</a></li>
+          <li role="none"><a href="#works" role="menuitem">Works</a></li>
+          <li role="none"><a href="#blogs" role="menuitem">Blogs</a></li>
+          <li role="none">
+            <a href="#contact" role="menuitem" class="nav-cta">Contact</a>
+          </li>
+        </ul>
+
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- ============================================
+    MOBILE MENU
+    ============================================ -->
+    <div
+      class="mobile-menu"
+      id="mobileMenu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation"
+    >
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#works">Works</a>
+      <a href="#blogs">Blogs</a>
+      <a href="#contact" class="mobile-cta">Contact</a>
+    </div>
+
+    <!-- ============================================
+    MAIN CONTENT
+    ============================================ -->
+    <main id="main">
+      <!-- ============================================
+        HERO SECTION
+        ============================================ -->
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <div class="hero-container">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="badge-dot"></span>
+              Available for freelance
+            </div>
+            <h1 id="hero-title">
+              Hey<br />
+              I'm <span class="highlight">Kelvin</span>,<br />
+              Full-Stack Developer
+            </h1>
+            <p>
+              I help businesses grow by crafting amazing web experiences. If
+              you're looking for a developer that likes to get stuff done.
+            </p>
+            <div class="hero-buttons">
+              <a href="#contact" class="btn-primary">Let's Talk</a>
+              <a href="#" class="btn-outline" download>Download CV</a>
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stats-grid">
+              <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Years of<br />Experience</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Projects<br />Completed</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-number">10+</span>
+                <span class="stat-label">Happy<br />Clients</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+        ABOUT SECTION
+        ============================================ -->
+      <section class="about" id="about" aria-labelledby="about-title">
+        <div class="about-container">
+          <h2 id="about-title" class="section-title">About Me</h2>
+          <div class="about-content">
+            <p>
+              <strong>Hello!</strong>
+              My name is <strong>Kelvin Njoroge</strong> and I specialize in web
+              development that utilizes
+              <strong>HTML, CSS, JavaScript, React, Python</strong>, and more.
+            </p>
+            <p>
+              I am a highly motivated individual and eternal optimist dedicated
+              to writing clear, concise, robust code that works. Striving to
+              never stop learning and improving.
+            </p>
+            <p>
+              When I'm not coding, I am writing blogs, reading, or picking up
+              some new hands-on art project like photography.
+            </p>
+            <p>
+              I like to have my perspective and belief systems challenged so
+              that I see the world through new eyes.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+        SKILLS SECTION
+        ============================================ -->
+      <section class="skills" id="skills" aria-labelledby="skills-title">
+        <div class="skills-container">
+          <h2 id="skills-title" class="section-title">Skills</h2>
+          <p class="skills-subtitle">
+            I am striving to never stop learning and improving
+          </p>
+
+          <div class="skills-grid">
+            <div class="skill-card">
+              <h3>Web Development</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">HTML</span>
+                <span class="skill-tag">CSS</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Tailwind</span>
+                <span class="skill-tag">Bootstrap</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-progress" style="width: 90%"></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <h3>App Development</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">iOS</span>
+                <span class="skill-tag">Android</span>
+                <span class="skill-tag">Flutter</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-progress" style="width: 65%"></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <h3>Backend &amp; Data</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Django</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">Node.js</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-progress" style="width: 75%"></div>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <h3>Tools &amp; DevOps</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">GitHub</span>
+                <span class="skill-tag">VS Code</span>
+                <span class="skill-tag">Figma</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-progress" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+        WORKS SECTION
+        ============================================ -->
+      <section class="works" id="works" aria-labelledby="works-title">
+        <div class="works-container">
+          <h2 id="works-title" class="section-title">Works</h2>
+          <p class="works-subtitle">
+            I had the pleasure of working with these awesome projects
+          </p>
+
+          <div class="works-grid">
+            <article class="work-card">
+              <div class="work-image work-image-1">
+                <span class="work-tag">Frontend</span>
+              </div>
+              <div class="work-info">
+                <h3>Blog Preview Card</h3>
+                <p>
+                  An interactive blog preview component built with HTML &amp;
+                  CSS.
+                </p>
+                <a href="#" class="work-link">View Website →</a>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-image work-image-2">
+                <span class="work-tag">JavaScript</span>
+              </div>
+              <div class="work-info">
+                <h3>Newsletter Sign-up</h3>
+                <p>
+                  Responsive newsletter sign-up form with success message
+                  handling.
+                </p>
+                <a href="#" class="work-link">View Website →</a>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-image work-image-3">
+                <span class="work-tag">React</span>
+              </div>
+              <div class="work-info">
+                <h3>TradeX Journal</h3>
+                <p>
+                  Trading journal application for tracking stocks and financial
+                  markets.
+                </p>
+                <a href="#" class="work-link">View Website →</a>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-image work-image-4">
+                <span class="work-tag">Design</span>
+              </div>
+              <div class="work-info">
+                <h3>Recipe Page</h3>
+                <p>
+                  Beautifully designed recipe page with responsive typography.
+                </p>
+                <a href="#" class="work-link">View Website →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+        BLOGS SECTION
+        ============================================ -->
+      <section class="blogs" id="blogs" aria-labelledby="blogs-title">
+        <div class="blogs-container">
+          <h2 id="blogs-title" class="section-title">Blogs</h2>
+          <p class="blogs-subtitle">
+            My thoughts on technology and business, welcome to subscribe
+          </p>
+
+          <div class="blogs-grid">
+            <article class="blog-card">
+              <h3>What does it take to become a web developer?</h3>
+              <p>
+                Web development encompasses a variety of tasks and processes
+                involved in creating websites for the internet...
+              </p>
+              <div class="blog-meta">
+                <span class="blog-author">Kelvin Njoroge</span>
+                <span class="blog-date">10 Oct 2025</span>
+                <span class="blog-read">2 Min</span>
+              </div>
+              <a href="#" class="blog-link">Read More →</a>
+            </article>
+
+            <article class="blog-card">
+              <h3>Getting Started with Python for Data Analysis</h3>
+              <p>
+                Python has become the go-to language for data analysis. Learn
+                the essential tools and libraries to get started...
+              </p>
+              <div class="blog-meta">
+                <span class="blog-author">Kelvin Njoroge</span>
+                <span class="blog-date">5 Oct 2025</span>
+                <span class="blog-read">3 Min</span>
+              </div>
+              <a href="#" class="blog-link">Read More →</a>
+            </article>
+
+            <article class="blog-card">
+              <h3>How to stay motivated while learning to code</h3>
+              <p>
+                The journey to becoming a developer can be challenging. Here are
+                my top tips for staying motivated...
+              </p>
+              <div class="blog-meta">
+                <span class="blog-author">Kelvin Njoroge</span>
+                <span class="blog-date">28 Sep 2025</span>
+                <span class="blog-read">1 Min</span>
+              </div>
+              <a href="#" class="blog-link">Read More →</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+        CONTACT SECTION
+        ============================================ -->
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div class="contact-container">
+          <h2 id="contact-title" class="section-title">Contact</h2>
+          <p class="contact-subtitle">
+            I'm currently available for freelance work
+          </p>
+
+          <div class="contact-wrapper">
+            <form class="contact-form" id="contactForm" novalidate>
+              <div class="form-group">
+                <label for="name"
+                  >Your name <span aria-hidden="true">*</span></label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter your name"
+                  required
+                  aria-required="true"
+                />
+                <span class="error-message" id="nameError"
+                  >Please enter your name</span
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="email"
+                  >Your email <span aria-hidden="true">*</span></label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  required
+                  aria-required="true"
+                />
+                <span class="error-message" id="emailError"
+                  >Please enter a valid email</span
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="message"
+                  >Your message <span aria-hidden="true">*</span></label
+                >
+                <textarea
+                  id="message"
+                  placeholder="Enter your needs"
+                  rows="5"
+                  required
+                  aria-required="true"
+                ></textarea>
+                <span class="error-message" id="messageError"
+                  >Please enter your message</span
+                >
+              </div>
+
+              <button type="submit" class="btn-primary btn-full">
+                Send Message
+              </button>
+            </form>
+
+            <div class="contact-info">
+              <div class="contact-details">
+                <h3>Let's Connect</h3>
+                <p>I'm always open to new opportunities and collaborations.</p>
+
+                <div class="contact-item">
+                  <span class="contact-icon">✉</span>
+                  <a href="mailto:kmacharia584@gmail.com"
+                    >kmacharia584@gmail.com</a
+                  >
+                </div>
+
+                <div class="contact-item">
+                  <span class="contact-icon">📱</span>
+                  <a href="tel:+254794610102">+254 794 610 102</a>
+                </div>
+
+                <div class="contact-item">
+                  <span class="contact-icon">📍</span>
+                  <span>Kenya</span>
+                </div>
+              </div>
+
+              <div class="contact-social">
+                <a
+                  href="https://github.com/Kelvyn94"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                >
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.15 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.62.24 2.85.12 3.15.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/kelvin-njoroge-48993422b/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path
+                      d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="https://www.frontendmentor.io/profile/Kelvyn94"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Frontend Mentor"
+                >
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path
+                      d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2.182c5.417 0 9.818 4.401 9.818 9.818 0 5.417-4.401 9.818-9.818 9.818-5.417 0-9.818-4.401-9.818-9.818 0-5.417 4.401-9.818 9.818-9.818z"
+                    />
+                    <path
+                      d="M8.727 7.636v8.728h6.546v-1.455h-5.091V7.636H8.727zm6.546 0v8.728h1.455V7.636h-1.455z"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================================
+    FOOTER
+    ============================================ -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <span class="footer-logo">&lt;/&gt;</span>
+            <span>Kelvin Njoroge</span>
+          </div>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#works">Works</a></li>
+            <li><a href="#blogs">Blogs</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 Kelvin Njoroge. All rights reserved.</p>
+          <div class="footer-legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms &amp; Conditions</a>
+          </div>
+          <p class="footer-credit">
+            Design By <a href="https://github.com/Kelvyn94">Kelvin Njoroge</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
