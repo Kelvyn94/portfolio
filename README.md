@@ -35,4 +35,4 @@ Deployed via Vercel as a static site (no build command, no output directory over
 ## Notes
 
 - `assets/og-image.svg` is an SVG. Some social platforms (notably LinkedIn) render `og:image` more reliably as a raster PNG/JPG. If a link preview looks wrong when shared, export `og-image.svg` to a 1200×630 PNG and update the `og:image` tag in `index.html`.
-- `og:image`/`og:url` should be updated to absolute URLs once the production domain is known (see `index.html` `<head>`).
+- `og:image`/`og:url` are set to `https://portfolio-steel-zeta-60.vercel.app/`. If a custom domain is added later, update both tags in `index.html` to match.
