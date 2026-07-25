@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — Kelvin Njoroge Macharia</title>
+<meta name="description" content="Research and technical writing samples from Kelvin Njoroge Macharia — covering trading methodology, financial-data systems, and software build notes.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+<style>
+  .hub-head{ padding:20px 0 10px; }
+  .hub-head h1{ font-family:'Source Serif 4', serif; font-size:clamp(1.9rem,4.4vw,2.6rem); margin:14px 0 16px; }
+  .hub-head p{ color:var(--text-dim); font-size:16px; max-width:600px; }
+  .hub-section{ padding:50px 0; border-top:1px solid var(--line); }
+  .hub-section:first-of-type{ border-top:1px solid var(--line); margin-top:20px; }
+  .hub-cat{ font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--amber-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:24px; }
+  .sample-list{ display:flex; flex-direction:column; }
+  .sample-row{
+    display:grid; grid-template-columns:1fr auto; gap:16px; align-items:baseline;
+    padding:20px 0; border-top:1px solid var(--line);
+  }
+  .sample-row:first-child{ border-top:none; }
+  .sample-row h3{ font-family:'Source Serif 4', serif; font-size:1.15rem; margin-bottom:6px; }
+  .sample-row h3 a:hover{ color:var(--amber); }
+  .sample-row p{ color:var(--text-dim); font-size:14.5px; max-width:560px; }
+  .sample-row .meta{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber-dim); white-space:nowrap; }
+  @media (max-width:760px){
+    .sample-row{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="../index.html">← Back to portfolio</a>
+    </nav>
+
+    <div class="hub-head">
+      <div class="article-tag">Writing</div>
+      <h1>Research &amp; technical writing</h1>
+      <p>Two tracks: structured research/analytical pieces on trading methodology and financial-data systems, and technical build notes from shipping the tools in the <a href="../index.html#work" style="color:var(--amber); border-bottom:1px solid var(--amber-dim);">work section</a>.</p>
+    </div>
+
+    <section class="hub-section">
+      <div class="hub-cat">Research</div>
+      <div class="sample-list">
+        <div class="sample-row">
+          <div>
+            <h3><a href="research-cross-market-divergence.html">Cross-Market Divergence as a Leading Signal</a></h3>
+            <p>A structured review of SMT divergence methodology across correlated forex and metals pairs, and where the signal tends to fail.</p>
+          </div>
+          <div class="meta">~1500 words · Research</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="research-matching-methods-comparison.html">Rule-Based vs. Model-Based Matching</a></h3>
+            <p>A comparative framework for automated resume-to-job-description scoring: keyword dictionaries versus embedding-based semantic similarity.</p>
+          </div>
+          <div class="meta">~1500 words · Research</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="research-trading-journal-data-quality.html">The Data-Quality Problem in Retail Trading Journals</a></h3>
+            <p>Why most retail traders can't actually analyze their own performance, and what a journal's schema has to get right first.</p>
+          </div>
+          <div class="meta">~800 words · Research</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="research-client-side-privacy.html">Client-Side Computation and Data Privacy</a></h3>
+            <p>A short review of the trade-offs when a web tool processes sensitive data entirely in the browser instead of a server.</p>
+          </div>
+          <div class="meta">~800 words · Research</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="research-keyword-tooling-economics.html">The Economics of Keyword-Based vs. API-Based Tooling</a></h3>
+            <p>Why "free to run at any scale" is a real design constraint, not just a marketing line, for small client-side tools.</p>
+          </div>
+          <div class="meta">~800 words · Research</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hub-section">
+      <div class="hub-cat">Technical</div>
+      <div class="sample-list">
+        <div class="sample-row">
+          <div>
+            <h3><a href="technical-trading-journal-schema.html">Designing a Trading Journal Schema</a></h3>
+            <p>Architecture notes from building Tradex: what a trade record actually needs to hold, and where most schemas fall apart.</p>
+          </div>
+          <div class="meta">~1500 words · Technical</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="technical-table-export-extension.html">From DOM to CSV</a></h3>
+            <p>Build notes on a Manifest V3 Chrome extension that finds, labels, and exports HTML tables reliably across arbitrary pages.</p>
+          </div>
+          <div class="meta">~1500 words · Technical</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="technical-realtime-pnl.html">Real-Time P&amp;L Without a Complicated Backend</a></h3>
+            <p>Notes on keeping P&amp;L calculations correct and responsive without reaching for a streaming infrastructure stack.</p>
+          </div>
+          <div class="meta">~800 words · Technical</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="technical-csv-excel-compatibility.html">Handling Excel Compatibility in CSV Exports</a></h3>
+            <p>The small, easy-to-miss details — UTF-8 BOM, delimiter escaping, quoting — that decide whether a CSV opens cleanly in Excel.</p>
+          </div>
+          <div class="meta">~800 words · Technical</div>
+        </div>
+        <div class="sample-row">
+          <div>
+            <h3><a href="technical-keyword-dictionary-guide.html">A Practical Guide to Keyword-Dictionary Design</a></h3>
+            <p>How to structure a keyword dictionary for client-side text matching so it stays maintainable as it grows.</p>
+          </div>
+          <div class="meta">~800 words · Technical</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

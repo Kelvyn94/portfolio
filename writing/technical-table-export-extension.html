@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From DOM to CSV — Kelvin Njoroge Macharia</title>
+<meta name="description" content="Build notes on a Manifest V3 Chrome extension that finds, labels, and exports HTML tables reliably across arbitrary pages.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Technical — Build Notes</div>
+    <h1>From DOM to CSV: Building a Reliable Table-Export Extension on Manifest V3</h1>
+    <div class="article-meta">~1500 words · Technical</div>
+
+    <div class="article-body">
+      <p class="lede">Table Exporter does one thing: find the HTML tables on whatever page a user is looking at, and turn them into clean CSV files without the manual copy-paste-into-Excel routine that quietly wastes time across every analyst's week. The idea is trivial to state and surprisingly easy to get wrong in the details. These are the build notes on the parts that actually determined whether the extension was reliable across arbitrary, unpredictable pages, versus only working on the one test page it was built against.</p>
+
+      <h2>Finding tables is the easy 80%</h2>
+      <p>Querying a page for every <code>&lt;table&gt;</code> element is one line of code. The hard part starts immediately after: real-world pages nest tables inside other tables for layout purposes (a legacy pattern that's rarer now but still shows up), render tables via JavaScript after the initial page load, and frequently include tiny structural tables — a two-cell layout table used for spacing — that have nothing to do with the tabular data a user actually wants exported. A naive "grab every table element" approach produces a export picker full of noise, which defeats the point of a tool meant to save time.</p>
+      <p>The extension filters candidate tables by a minimum row and column threshold before surfacing them to the user, which eliminates the great majority of layout-table false positives without needing anything more sophisticated than a size heuristic. It's not a perfect signal, but it's a cheap one that removes most of the noise, and cheap-but-mostly-right beats expensive-and-marginally-better for a tool that needs to run instantly on any page a user happens to be on.</p>
+
+      <h2>Auto-labeling: context the DOM doesn't hand you directly</h2>
+      <p>A raw table export named "table-3.csv" is technically correct and practically useless once a user has exported five tables from the same page and can't remember which is which. The extension labels each detected table using the nearest preceding heading element — walking up and back through the DOM from the table node to find the closest <code>h1</code>–<code>h4</code> that plausibly describes it, rather than relying on a <code>&lt;caption&gt;</code> element that most real-world pages simply don't include.</p>
+      <p>This sounds simple and has a genuinely fiddly edge case: "nearest preceding heading" in document order isn't always the heading that visually reads as the table's title, especially on pages with complex CSS layouts where visual order and DOM order diverge — a table that appears directly under a heading visually might be dozens of nodes away from it in the actual DOM tree due to grid or flex layout wrapping. The practical fix wasn't a fully general solution (that would require essentially reimplementing layout comprehension), it was a bounded search: look within a reasonable DOM distance of the table node, prefer the closest heading by node distance rather than pure document order, and fall back to a generic "Table N" label when nothing confident is found within that bound. A partially-right heuristic that fails visibly (an unlabeled table is obviously unlabeled) is safer than a fully-general one that occasionally mislabels a table with a confident-looking but wrong name.</p>
+
+      <h2>Manifest V3 changed the extraction path, not just the manifest file</h2>
+      <p>Building on Manifest V3 meant the extension's content script runs in an isolated world with a narrower, more explicit permission surface than the older Manifest V2 model allowed. In practice, that shaped two decisions directly. First, the extraction logic — reading table DOM nodes and serializing them into a plain data structure — has to happen entirely within the content script's injected context, because the background service worker (which replaces the old persistent background page under V3) doesn't have direct DOM access and only receives the already-extracted data via message passing. Second, because the V3 service worker isn't persistently running, the extension can't rely on any in-memory state surviving between the moment a user clicks "export" and the moment the CSV generation completes — the entire extraction-to-CSV pipeline has to complete and hand off its result within a single message-passing round trip, rather than assuming a long-lived background process is available to coordinate multiple steps.</p>
+      <p>This pushed more of the actual work into the content script than a V2 version of the same extension might have had, which turned out to be the right shape anyway: extraction and CSV formatting both need the DOM context, and keeping them together in the content script means the background service worker's only job is triggering the flow and handling the download — a much smaller, more reliable surface area for the part of the extension that has the least persistent lifetime.</p>
+
+      <h2>Getting the CSV itself right</h2>
+      <p>Serializing a table to CSV is not just joining cell text with commas. Cell values containing commas, quotes, or embedded newlines have to be quoted and escaped correctly, or the resulting file silently misaligns columns the moment it's opened — which is a much worse failure mode than an obvious error, because it looks fine until someone notices a formula referencing the wrong column three rows down. Every extracted cell value is checked for characters requiring escaping and wrapped in quotes with internal quotes doubled per the CSV convention, rather than assuming clean, comma-free text — an assumption that holds on a demo page and fails constantly on real pages with addresses, descriptions, or free-text fields inside table cells.</p>
+      <p>The file also gets a UTF-8 byte-order-mark prepended before download, specifically because Excel — still the primary destination for most exported tables — misreads UTF-8 files without a BOM as a different encoding by default, which shows up as mangled special characters on anything beyond plain ASCII. It's a small, easy-to-skip detail that determines whether the exported file "just works" when someone double-clicks it, or requires a manual encoding-fix step that erodes the entire value proposition of a one-click export tool.</p>
+
+      <h2>What made the difference between a demo and a tool</h2>
+      <p>None of the individual pieces here are difficult in isolation. What made the extension reliable across arbitrary pages instead of just the pages it was tested against was treating each of these as a real constraint rather than an edge case to handle later: layout tables that look like data tables, headings that are structurally distant from their table in the DOM, a service worker lifecycle that doesn't tolerate assumed persistent state, and cell content that isn't guaranteed to be clean. Skipping any one of them produces a tool that works in the demo and breaks on the first real page a user tries it on — which, for a utility meant to save time on tedious work, is the difference between something people keep installed and something they uninstall after the first bad export.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

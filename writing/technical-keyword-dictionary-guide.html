@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Practical Guide to Keyword-Dictionary Design — Kelvin Njoroge Macharia</title>
+<meta name="description" content="How to structure a keyword dictionary for client-side text matching so it stays maintainable as it grows.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Technical — Build Notes</div>
+    <h1>A Practical Guide to Keyword-Dictionary Design</h1>
+    <div class="article-meta">~800 words · Technical</div>
+
+    <div class="article-body">
+      <p class="lede">A keyword dictionary looks like a solved problem the first time you build one: a flat list of terms, checked against a document for presence or absence. It stops looking solved the moment the list grows past a few dozen entries and starts producing false negatives that are genuinely hard to trace back to a specific missing synonym. The structure of the dictionary — not just its content — determines whether it stays maintainable or quietly rots.</p>
+
+      <h2>Categorize before you list</h2>
+      <p>A flat list of seventy-plus terms invites duplication and inconsistent weighting, because nothing distinguishes a core technical skill from a nice-to-have soft-skill phrase. Splitting the dictionary into explicit categories — technical skills, tools/platforms, soft-skill phrases, certifications — before adding a single term does two things: it makes the scoring function's weighting decisions explicit (a missing core technical term should count for more than a missing soft-skill phrase) instead of implicit and undocumented, and it makes gaps in coverage visible during maintenance, because a thin "certifications" category stands out immediately against a well-populated "technical skills" category in a way a single flat list never surfaces.</p>
+
+      <h2>Every entry needs its synonym set, not just its canonical form</h2>
+      <p>The single biggest source of missed matches in a keyword system isn't a missing concept, it's a missing phrasing of a concept that's already in the dictionary. "REST API" and "RESTful API" and "RESTful services" describe the same thing; a dictionary that only stores "REST API" as a bare string will miss the other two, and the miss looks, from the outside, like the matching tool doesn't understand the domain — when the actual bug is a dictionary entry with no alias list attached. Every meaningful entry should carry its known variants as a group, not as separate independent entries, both so scoring treats them as one concept rather than double-counting, and so maintenance has one clear place to add a newly noticed variant.</p>
+
+      <h2>Plan for drift, because the dictionary is never actually finished</h2>
+      <p>Technical and role terminology shifts continuously — job titles, tool names, and even entire skill categories (a term that barely existed five years ago can become a standard line item on postings today) change faster than a dictionary built once and left alone can track. Treating the dictionary as a static artifact finished at launch guarantees it degrades: coverage that was reasonable on day one becomes noticeably worse a year later, with no error or crash to signal the decline — it just quietly starts missing more legitimate matches, in a way that's invisible unless someone is actively comparing tool output against manual review. The dictionary needs an explicit maintenance cadence, and ideally a lightweight mechanism for logging terms that appear in real job postings run through the tool but aren't in the dictionary yet, so gaps get surfaced by actual usage instead of only being caught by someone manually auditing the list.</p>
+
+      <h2>Matching needs to handle more than exact substring checks</h2>
+      <p>Naive substring matching creates two opposite failure modes. It's too loose when a short term like "R" (the programming language) matches inside unrelated words, and too strict when case, pluralization, or minor punctuation differences (Node.js vs. NodeJS vs. Node JS) cause an exact-match check to miss an obvious hit. The practical fix is boundary-aware matching — checking for the term as a whole word or recognized token, not an arbitrary substring — combined with light normalization (case-folding, punctuation stripping) applied consistently to both the dictionary entries and the document being scanned, so the comparison happens on a normalized form rather than requiring every possible surface variant to be listed explicitly.</p>
+
+      <h2>The maintenance lesson</h2>
+      <p>A keyword dictionary's real design problem isn't picking the right initial seventy terms — a reasonable first pass isn't hard to produce. It's building the structure (categorized, alias-aware, normalized) and the process (a way to notice and log the gaps usage reveals) that keep it accurate a year later, when the initial list is inevitably out of date and nobody remembers exactly which decisions went into it the first time. A dictionary designed to be edited easily and audited for gaps will still be useful long after a flat, unstructured list has quietly stopped matching half of what it should.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

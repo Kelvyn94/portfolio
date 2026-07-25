@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-Time P&amp;L Without a Complicated Backend — Kelvin Njoroge Macharia</title>
+<meta name="description" content="Notes on keeping P&amp;L calculations correct and responsive without reaching for a streaming infrastructure stack.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Technical — Build Notes</div>
+    <h1>Real-Time P&amp;L Without a Complicated Backend</h1>
+    <div class="article-meta">~800 words · Technical</div>
+
+    <div class="article-body">
+      <p class="lede">"Real-time" in a trading journal's UI sounds like it demands a streaming architecture — websockets, a message queue, a service dedicated to fanning out price ticks to connected clients. For a single-user or small-scale journal application, most of that is unnecessary weight solving a problem the actual usage pattern doesn't have.</p>
+
+      <h2>What "real-time" actually needs to mean</h2>
+      <p>A trader glancing at an open position wants a P&amp;L figure that's close enough to current price to be trustworthy — not a figure that's provably synchronized to the millisecond with an exchange feed. That distinction matters because it changes the engineering budget entirely: a figure refreshed every few seconds via polling is indistinguishable, to a human looking at a screen, from one pushed instantly via a websocket, as long as the polling interval is short enough relative to how fast the instrument actually moves. For forex and metals — the instruments Tradex is built around — a price fetched every three to five seconds is more than sufficient for a journal's display purposes; it is not sufficient for algorithmic execution, but a journal isn't executing trades, it's displaying context for a human.</p>
+
+      <h2>Where the computation should live</h2>
+      <p>The trade record itself — entry price, size, direction — is static once a trade is open; it doesn't need to be rewritten every time price moves. Current price is the only volatile input, and it's fetched and cached independently, on its own short polling interval. P&amp;L is then computed client-side, on demand, from the static trade data plus the last cached price — a simple multiplication, not a database write. This keeps the database's write pattern boring and predictable (a trade row is written at entry, occasionally amended, and once more at close) while the "live" feeling in the UI comes entirely from the price cache refreshing and the client recomputing the display value locally.</p>
+      <p>The alternative — writing an updated P&amp;L value to the trade record on every price tick — sounds more "real" but is strictly worse: it multiplies database writes by however many open positions and price updates are happening, for a value that's derivable from data already in the row. It also creates a subtle correctness risk, since a stored, periodically-updated P&amp;L value can silently go stale if a write is missed, whereas a value computed fresh on every render can't be stale by definition — it's only ever as old as the last price fetch.</p>
+
+      <h2>Where this approach stops being sufficient</h2>
+      <p>This is a deliberate trade-off, not a universal rule. It holds for a single-user or small-team journal displaying P&amp;L to a human. It stops holding the moment the use case shifts to something that genuinely needs sub-second synchronization across many concurrent clients watching the same data — a multi-user dashboard, or anything feeding an automated decision downstream. Recognizing that boundary is the actual skill here: reaching for websockets and a pub/sub layer by default, before the usage pattern actually demands it, adds operational surface area — more moving parts to deploy, monitor, and debug — that a polling-plus-client-side-computation approach avoids entirely for the cases where it's genuinely sufficient.</p>
+
+      <h2>The general principle</h2>
+      <p>"Real-time" is a UX requirement, not automatically an infrastructure requirement. The right question isn't "how do I make this real-time" — it's "how close to current does this actually need to be, for whom, and what's the cheapest architecture that hits that bar." For a trading journal's open-position display, the answer was a short polling interval and client-side computation, and it produced a UI that feels live without any of the operational cost of a streaming stack that the actual usage pattern never needed.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

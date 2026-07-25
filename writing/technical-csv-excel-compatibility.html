@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handling Excel Compatibility in CSV Exports — Kelvin Njoroge Macharia</title>
+<meta name="description" content="The small, easy-to-miss details — UTF-8 BOM, delimiter escaping, quoting — that decide whether a CSV opens cleanly in Excel.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Technical — Build Notes</div>
+    <h1>Handling Excel Compatibility in CSV Exports</h1>
+    <div class="article-meta">~800 words · Technical</div>
+
+    <div class="article-body">
+      <p class="lede">CSV looks like the simplest file format in common use — values separated by commas, rows separated by newlines. It's simple enough that most developers write a naive serializer once, watch it work on a test file, and never revisit it. It's also simple enough to get subtly wrong in ways that only surface once real, messy data goes through it, at which point the failure looks like corrupted data rather than a formatting bug.</p>
+
+      <h2>The BOM: an invisible three bytes that decide encoding</h2>
+      <p>A plain UTF-8 text file, opened directly in Excel, is frequently misread. Excel's default CSV import doesn't reliably auto-detect UTF-8; without a hint, it falls back to a legacy code page, and anything outside plain ASCII — accented characters, currency symbols, non-Latin text pulled from a table — renders as garbled characters. The fix is a byte-order mark: three specific bytes (<code>EF BB BF</code>) prepended to the start of the file, which Excel recognizes as an explicit UTF-8 signal and reads correctly from. It's invisible in any UTF-8-aware editor and easy to forget entirely, because a developer testing with plain-ASCII sample data will never see the bug — it only appears once a real table with a "café" or a "£" in a cell gets exported and opened by someone who isn't the developer.</p>
+
+      <h2>Quoting isn't optional, and the rule isn't "quote everything"</h2>
+      <p>Naive CSV generation joins cell values with commas and calls it done. This breaks the instant a cell itself contains a comma — an address, a "Smith, John"-formatted name, a description field with a list in it — because the extra comma is indistinguishable from a column delimiter once the file is written. The correct rule, from the CSV convention most spreadsheet software actually follows: any field containing a comma, a double quote, or a line break must be wrapped in double quotes, and any double quote inside that field must itself be escaped by doubling it. Quoting every field regardless of content is a common shortcut that technically works but produces needlessly noisy output; the more precise approach — quote only when a field actually requires it — keeps the exported file readable while still being fully correct on the fields that need protection.</p>
+
+      <h2>Newlines inside cells are the failure mode that's easy to miss in testing</h2>
+      <p>A table cell containing a multi-line description — common in "notes" or "details" columns scraped from real pages — has an embedded newline. If that newline isn't caught by the same quoting logic as commas and quotes, it silently breaks a row into two in the exported file, shifting every subsequent column in that row and making the error look like random data corruption rather than a specific, identifiable bug. This is a case where quoting logic that's correct for commas and quotes but forgets embedded newlines will pass every simple test (none of which happen to include a multi-line cell) and then fail on the first real page where a table has a paragraph inside a cell.</p>
+
+      <h2>Delimiter choice: comma isn't universal</h2>
+      <p>In several locales, Excel's default list separator is a semicolon rather than a comma, because the comma is already the decimal separator in those number formats. A comma-delimited file opened under those regional settings imports as a single unsplit column rather than properly separated fields, which looks like the export tool failed rather than like a locale mismatch. There's no way to auto-detect a user's Excel locale from a browser-based export tool, so the practical mitigation is documenting the expected delimiter clearly and, where feasible, offering both comma- and semicolon-delimited export as an option rather than assuming one universal default.</p>
+
+      <h2>What this adds up to</h2>
+      <p>None of these are exotic edge cases — they're the default behavior of Excel and the default shape of real-world table data. A CSV exporter that skips the BOM, quotes naively, or doesn't account for embedded newlines will look completely correct against clean test data and then fail, often silently, the first time it touches a real table with international characters, free-text fields, or multi-line notes. Getting these details right isn't about handling rare inputs — it's about handling the actual, ordinary inputs that show up the moment a tool leaves the demo and gets used on real pages.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

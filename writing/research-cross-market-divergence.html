@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cross-Market Divergence as a Leading Signal — Kelvin Njoroge Macharia</title>
+<meta name="description" content="A structured review of SMT divergence methodology across correlated forex and metals pairs, and where the signal tends to break down.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Research — Financial Markets</div>
+    <h1>Cross-Market Divergence as a Leading Signal: A Structured Review of SMT Methodology</h1>
+    <div class="article-meta">~1500 words · Research</div>
+
+    <div class="article-body">
+      <p class="lede">Most retail trading signals are single-instrument, single-timeframe, and derived from price alone. SMT divergence — shorthand that has come to mean "smart money divergence" in most retail literature — asks a different question: when two instruments are supposed to move together, what does it mean when one keeps making progress and the other doesn't?</p>
+
+      <p>This review sets out the mechanics of that question, the conditions under which the answer is informative, and the conditions under which it is noise dressed up as signal. It draws on the design decisions behind a real-time cross-asset monitoring system built to test the idea at scale, rather than eyeballing charts after the fact.</p>
+
+      <h2>What the divergence actually measures</h2>
+      <p>Start with two instruments that share a common driver — a currency, a risk regime, a commodity complex. EURUSD and GBPUSD both move against dollar strength. XAUUSD and XAGUSD both move with real-yield expectations and risk sentiment. In a clean trending environment, correlated instruments make new structural highs or lows roughly together: if EURUSD prints a higher high, GBPUSD should too, give or take some lag.</p>
+      <p>A divergence appears when that agreement breaks: one instrument prints the new extreme, the correlated instrument fails to confirm it. The read is that the move in the confirming instrument was not backed by the same underlying flow — that the "smart money" driving the correlated pair as a bloc didn't participate in the second leg, and the failure to confirm is the more honest read of where the bloc actually stands.</p>
+      <p>That is a reasonable hypothesis. It is also, on its own, unfalsifiable from a single chart glance — which is exactly why it needs a method, not a vibe.</p>
+
+      <h2>A minimal method</h2>
+      <ul>
+        <li><strong>Pair selection.</strong> Correlation has to be real and current, not assumed from a textbook. Rolling correlation between the two instruments should be checked over the lookback window being used, not taken on faith because "gold and silver always move together" — they don't, especially during idiosyncratic industrial-demand moves in silver.</li>
+        <li><strong>Timeframe alignment.</strong> The structural high or low being compared has to be on the same timeframe for both instruments, and ideally confirmed on at least one lower timeframe to rule out a printing artifact from a thin-liquidity spike.</li>
+        <li><strong>Structure definition.</strong> "Higher high" and "lower low" need an unambiguous, mechanical definition — swing points based on a fixed lookback, not discretionary chart-reading applied after the outcome is already known. This is the single biggest source of false positives in retail write-ups: the divergence is "found" retrospectively on a chart where the trader already knows which reversal to point at.</li>
+        <li><strong>Confirmation window.</strong> A divergence is a hypothesis about the next few candles, not a standing truth. It needs an expiry — if price doesn't respect the implied reversal within a defined window, the setup is void, not "still developing."</li>
+      </ul>
+
+      <h2>Building it as a system instead of a habit</h2>
+      <p>The difference between "I sometimes notice divergence" and a usable edge is instrumentation. A monitoring system that tracks correlated pairs — majors like GBPUSD and EURUSD, and metals like XAUUSD and XAGUSD — across multiple timeframes simultaneously, and flags a structural disagreement the moment it forms, removes the two biggest sources of error in manual divergence-spotting: hindsight bias in identifying the swing points, and the simple fact that a human can't watch four instruments across three timeframes continuously without missing formations.</p>
+      <p>Practically, this means the system needs three components working together: a structure-detection routine that defines swings mechanically and identically across instruments, a correlation check that gates which pairs are even eligible for comparison at a given time, and a notification layer — in this case, email alerts — that surfaces a candidate divergence the moment the mechanical conditions are met, rather than requiring someone to be staring at four charts at 3 a.m. when the London session opens.</p>
+      <p>That last point matters more than it sounds. A signal that only fires when a trader happens to be looking is not a signal, it's a lottery ticket. Automating the detection is what turns "I've noticed this pattern seems to work" into something that can actually be tracked, logged, and evaluated over a real sample size.</p>
+
+      <h2>Where the signal breaks</h2>
+      <p>Three failure modes show up consistently once the method is applied mechanically instead of retrospectively.</p>
+      <p><strong>Correlation breakdown around news.</strong> Divergence assumes the two instruments are still responding to the same driver. Around high-impact releases — a CPI print, a central bank decision — instruments can decouple entirely for reasons that have nothing to do with smart-money positioning and everything to do with idiosyncratic repricing. A divergence flagged in the thirty minutes around a release is measuring event noise, not flow disagreement, and should be discounted or suppressed by the system rather than treated as a normal signal.</p>
+      <p><strong>Low-liquidity false structure.</strong> Thin sessions — the Asian session for GBP pairs, holiday-thinned trading for metals — produce swing points that look structurally meaningful on a chart but are really a function of a handful of orders moving price in an empty book. Structure detection needs a liquidity or session filter, or it will manufacture divergences that are really just noise from a market with nobody in it.</p>
+      <p><strong>Confirmation bias in manual review.</strong> Even with a mechanical detector, a human looking at the output can still cherry-pick which flagged divergences to remember. This is why logging every flagged instance — not just the ones that worked — and reviewing the full set afterward is not optional. A journal of every alert generated, matched against what price actually did afterward, is the only way to know if the method has any edge at all, as opposed to feeling like it does because the memorable wins get replayed and the misses get forgotten.</p>
+
+      <h2>What the signal is actually good for</h2>
+      <p>Used narrowly, SMT divergence is not an entry system. It's a filter — a reason to pay closer attention to a level that other context (a session high, a round number, a prior structure break) has already flagged as significant. Treated as a standalone trigger, it produces a steady stream of plausible-looking but statistically thin setups. Treated as one input that has to align with independent structural context before a trade is considered, it does what most good confluence factors do: it narrows the field of candidate setups down to the ones worth the risk.</p>
+      <p>The broader point generalizes past this one pattern. Any cross-asset or cross-instrument signal is only as good as the mechanical rigor behind the correlation check, the structure definition, and the review discipline afterward. Build the detection first, log everything it flags — including the failures — and only then decide whether the pattern is real or just a story that happens to be pattern-shaped.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Economics of Keyword-Based vs. API-Based Tooling — Kelvin Njoroge Macharia</title>
+<meta name="description" content="Why 'free to run at any scale' is a real design constraint, not just a marketing line, for small client-side tools.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Research — Product Economics</div>
+    <h1>The Economics of Keyword-Based vs. API-Based Tooling</h1>
+    <div class="article-meta">~800 words · Research</div>
+
+    <div class="article-body">
+      <p class="lede">It's easy to treat "call an AI API" as the default upgrade path for any text-processing tool, and just as easy to skip past what that decision actually costs once a tool has real, sustained usage. The choice between a static keyword-dictionary approach and an API-backed model isn't just a technical one — it's an economic one, and it shapes who a tool can actually serve.</p>
+
+      <h2>The cost curve looks different for each approach</h2>
+      <p>A keyword-dictionary tool has a fixed, one-time cost: building and maintaining the dictionary. Once that's done, running the tool for the one-thousandth user costs the same as running it for the first — effectively nothing, since the computation happens in the user's own browser. There's no per-request bill, no rate limit to hit, no usage tier to upgrade into as traffic grows.</p>
+      <p>An API-backed tool has a marginal cost per use. Every match, every scoring request, is a billed call to a hosted model. That's a completely reasonable trade when the value delivered per call clearly exceeds the cost — but it means the tool's growth is now coupled to a recurring expense that scales with exactly the outcome the builder wants, which is more usage. A tool that goes viral is good news for a keyword-dictionary version and a budgeting emergency for an unthrottled API-backed one.</p>
+
+      <h2>Who this actually affects</h2>
+      <p>The people most affected by this cost structure are the ones least able to absorb it if it's passed on to them: someone job-searching and running a matching tool against every posting they consider applying to, someone iterating repeatedly on a resume to see how small wording changes affect a score. That's exactly the usage pattern — frequent, repeated, low-stakes-per-call — where a per-request cost either has to be absorbed by the operator indefinitely or eventually passed to the user through a paywall or a quota. A free, keyword-based tool with no backend sidesteps that tension entirely: there's no usage tier to be pushed into, because there's no usage cost to recover.</p>
+
+      <h2>The honest counter-argument</h2>
+      <p>None of this means API-backed tooling is a mistake. Some problems genuinely need the coverage a language model provides, and for those, the marginal cost is the price of a feature that a fixed dictionary cannot replicate at any dictionary size — catching paraphrase, unusual phrasing, and domain drift a static list will always miss. The economic argument isn't "never use an API," it's "know what you're buying with that marginal cost, and don't reach for it by default when a fixed-cost approach solves the actual problem in front of the user."</p>
+
+      <h2>A practical design pattern</h2>
+      <p>The pattern that resolves this cleanly, and the one worth defaulting to for small tools aimed at broad, repeated use: make the free, fixed-cost, transparent method the default experience, and offer the API-backed method as an explicit, opt-in enhancement for the cases that specifically need it. That keeps the tool free and unlimited for its most common use case — a job-seeker checking many postings — while still making the more powerful method available to whoever is willing to accept its cost and trade-offs for a specific harder case. It also keeps the operator's costs bounded and predictable, which is what actually determines whether a small, useful tool stays free indefinitely or eventually has to be shut down, rate-limited, or monetized in a way that changes what it originally was.</p>
+
+      <h2>Why this belongs in the design conversation, not just the budget</h2>
+      <p>Cost structure is usually treated as an implementation detail decided after the product decisions are made. For small, high-frequency tools, it's closer to a product decision itself: it determines who can actually use the tool without friction, and for how long the tool can remain free before economics force a change. Deciding on the matching method by asking "which is more accurate" without also asking "what does this cost per use, and who ends up paying for it" is an incomplete analysis — and for tools meant to be genuinely free and widely reusable, it's the question that matters most.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

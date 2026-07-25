@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rule-Based vs. Model-Based Matching — Kelvin Njoroge Macharia</title>
+<meta name="description" content="A comparative framework for automated resume-to-job-description scoring: keyword dictionaries versus embedding-based semantic similarity.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Research — Applied NLP</div>
+    <h1>Rule-Based vs. Model-Based Matching: A Comparative Framework for Resume–Job Scoring</h1>
+    <div class="article-meta">~1500 words · Research</div>
+
+    <div class="article-body">
+      <p class="lede">Every tool that scores a resume against a job posting is really making a bet about what "matching" means. The bet shapes everything downstream: cost, latency, privacy, and how much a candidate can trust the number it produces. This review lays out the two dominant approaches — keyword-dictionary matching and embedding-based semantic similarity — as a framework for deciding which one actually fits a given use case, rather than defaulting to whichever is more fashionable.</p>
+
+      <h2>Method A: keyword-dictionary matching</h2>
+      <p>The mechanics are simple by design. A curated dictionary maps a role or domain to the terms that matter — technical skills, tools, certifications, soft-skill phrases. The resume and the job posting are both scanned against that dictionary, and the score is some function of overlap: what fraction of the posting's required terms appear in the resume, weighted by how the dictionary categorizes each term.</p>
+      <p>The strengths are structural, not incidental. Because the whole computation is string matching against a fixed list, it can run entirely client-side — no API call, no data leaving the browser, no per-request cost. That makes it free to run at effectively any scale, which matters more than it sounds for a tool meant to be used repeatedly during a job search rather than gated behind a quota. It's also fully transparent: a user can see exactly which terms triggered the score and which didn't, which turns the output into something actionable — "you're missing these five terms" — instead of an opaque number.</p>
+      <p>The weakness is equally structural: the dictionary only knows what it's been told. "Built REST APIs" and "developed backend services" describe overlapping work but share almost no tokens. A resume that says "led a cross-functional team" won't match a posting asking for "team leadership experience" unless someone has already anticipated that phrasing pair and added it to the dictionary. Coverage becomes a maintenance problem: the dictionary has to be actively grown as language and role titles drift, or the tool quietly degrades into missing legitimate matches while looking exactly as confident as it did on day one.</p>
+
+      <h2>Method B: embedding-based semantic similarity</h2>
+      <p>The alternative approach doesn't match strings, it matches meaning. Both documents are converted into vector representations — embeddings — produced by a language model trained to place semantically similar text near each other in vector space, regardless of exact wording. "Built REST APIs" and "developed backend services" end up close together because the model has learned, from a large training corpus, that they describe related work.</p>
+      <p>This solves the paraphrase problem directly. It also generalizes better to domains or phrasings the dictionary author never anticipated, and it can, in principle, weigh entire sentences of context rather than isolated terms — catching, for instance, that five years of relevant experience described in a single dense paragraph is a stronger match than the same keywords scattered incidentally.</p>
+      <p>The cost is real, on three fronts. First, it usually requires an API call to a hosted model, which means latency, a per-request cost, and — critically — the resume and job posting leaving the user's browser and going to a third-party service. For a tool handling what is, in effect, a personal document, that's not a minor implementation detail; it's a decision the user should be able to see and opt into, not one buried in a terms-of-service page. Second, the score becomes harder to explain: "your embedding similarity is 0.71" doesn't tell a candidate what to change, unless the tool does additional work to extract and surface specific gaps. Third, model behavior can drift or vary across versions in ways a fixed dictionary never will — the same resume-posting pair might score differently after a silent model update, which is a strange property for something presented as a stable metric.</p>
+
+      <h2>A framework for choosing</h2>
+      <p>The right method depends on what the score is actually for.</p>
+      <ul>
+        <li><strong>If the tool needs to run for free, instantly, and without sending personal documents anywhere</strong> — a keyword dictionary is close to strictly better. The transparency is a genuine feature, not just a workaround for lacking a model: candidates preparing an application benefit more from "add these terms" than from an unexplained similarity score.</li>
+        <li><strong>If the tool is operating across highly varied domains with unpredictable phrasing</strong>, and the operator is willing to accept the cost, latency, and data-handling implications, embeddings will catch matches a fixed dictionary structurally cannot.</li>
+        <li><strong>If both matter</strong> — coverage of unanticipated phrasing and low-cost transparency — the honest answer is a hybrid, not a forced choice: run the dictionary match first as the default, fast, private, zero-cost pass, and offer a model-assisted pass as an explicit, opt-in enhancement for users who want the broader coverage and are informed that the request leaves the browser to get it.</li>
+      </ul>
+
+      <h2>Applied to a real tool</h2>
+      <p>This is the design logic behind a resume-to-job matching tool built as a single client-side page: a dictionary of 70-plus technical, business, and soft-skill terms drives the default score, entirely in-browser, with no backend and no per-use cost. That decision wasn't a stopgap for lacking access to a model API — it was the correct default for a tool meant to be used freely and repeatedly during a job search, where transparency about exactly which skills are missing is more useful to the candidate than a single opaque similarity number.</p>
+      <p>The roadmap for the same tool includes an optional model-assisted matching layer specifically as an addition, not a replacement — offered for cases where a candidate's phrasing genuinely diverges from the posting's, with the trade-off (cost, latency, data leaving the browser) made explicit rather than hidden. That mirrors the framework above: default to the cheaper, more transparent, more private method, and treat the more expensive, more opaque method as an upgrade a user opts into with full knowledge of what they're trading away to get it.</p>
+
+      <h2>The general lesson</h2>
+      <p>"Which method is better" is the wrong question for most text-matching tools. The better question is what the score needs to do — be free and explainable, or be broad and forgiving of unanticipated phrasing — and then choosing the method whose weaknesses are the ones the use case can actually tolerate. Keyword dictionaries fail by missing legitimate matches when coverage is incomplete. Embedding models fail by being expensive, slow, harder to explain, and dependent on data leaving the user's control. Neither failure mode is disqualifying on its own; picking the one that costs less for a specific tool's specific users is the actual design decision, and it's one that should be made deliberately rather than defaulted into because one approach happens to be the current trend.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing a Trading Journal Schema — Kelvin Njoroge Macharia</title>
+<meta name="description" content="Architecture notes from building Tradex: what a trade record actually needs to hold, and where most schemas fall apart.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Technical — Architecture Notes</div>
+    <h1>Designing a Trading Journal Schema: Notes from Building Tradex</h1>
+    <div class="article-meta">~1500 words · Technical</div>
+
+    <div class="article-body">
+      <p class="lede">Tradex started from a simple complaint: every trading journal I'd tried was either a generic CRUD form with a "notes" field bolted on, or a spreadsheet that worked until it didn't. Building it as a React, Node.js, and PostgreSQL application meant the schema had to be decided early and correctly, because a trade record is one of those data structures that's expensive to change once real trade history depends on it. These are the decisions that mattered most, and why.</p>
+
+      <h2>Start from the question, not the entity</h2>
+      <p>The tempting first move is to model a "trade" the way a broker's export models it: symbol, side, entry, exit, size, P&L. That's a record of an outcome, not a journal. The actual questions a trader wants answered later — was this setup profitable across the last quarter, how does performance change by session, was realized risk in line with planned risk — determine what the schema needs to capture, and none of those questions can be answered from an outcome-only record. So the trade table isn't just a ledger entry; it carries a setup classification, a stated thesis, the planned stop and target at entry, and session metadata, all captured at creation time rather than backfilled.</p>
+      <p>This has a direct schema consequence: several fields that look optional from a pure data-modeling perspective — setup_type, planned_risk, thesis_note — are enforced as required at the application layer before a trade can be saved. A nullable column doesn't stop a user from skipping it under time pressure; a validation rule at the point of entry does. The database schema stays permissive (nullable, for import flexibility), but the write path through the API is not.</p>
+
+      <h2>Separating planned state from realized state</h2>
+      <p>One of the more consequential modeling decisions was refusing to let "planned" and "realized" collapse into the same fields. A trade has a planned stop distance and a planned target at entry, and — separately — a realized exit price and realized P&L once it closes. Storing only the realized numbers, and letting a user mentally reconstruct what they "meant to do," is exactly how stop-widening and target-moving become invisible in review. The schema keeps planned_stop and planned_target as immutable once set (edits after entry require an explicit, logged amendment rather than a silent overwrite), specifically so that "risk taken vs. risk planned" is a query the analytics layer can actually run, instead of a number nobody can trust.</p>
+
+      <h2>Instrument-specific fields without a fractured schema</h2>
+      <p>Supporting both forex pairs and gold (XAUUSD) meant handling instruments with different pip/point conventions, different typical position-sizing math, and different session liquidity patterns, without ending up with a separate table per instrument class — which would make cross-instrument analytics (a core feature) much harder to query. The approach: a single trades table with a normalized instrument reference table that carries the instrument-specific conversion factors (pip value, contract size, typical session windows), and all position-size and P&L calculations resolve through that reference rather than hardcoding assumptions per instrument in application code. Adding a new instrument class later is a data change, not a schema migration — a property that mattered more than it seemed like it would at design time.</p>
+
+      <h2>Real-time P&amp;L without denormalizing into a mess</h2>
+      <p>Real-time P&amp;L display for open positions needs current price, which is external, volatile, and shouldn't live in the same table as the durable trade record. The trade record stores entry price, size, and direction — everything needed to compute P&amp;L given a current price — and current price itself is fetched and cached separately, joined at read time rather than written into the trade row on every tick. This keeps the trade table's write pattern simple (it's written once at entry, occasionally amended, and once more at close) while still supporting a live-updating P&amp;L figure in the UI, computed client-side from the last cached price and the static trade data. Trying to keep a live P&amp;L column updated in the database itself would have meant either constant writes on every price tick or a stale figure — neither of which was acceptable for a page a trader is watching during a session.</p>
+
+      <h2>Authentication and data ownership as a schema concern, not just a middleware concern</h2>
+      <p>Secure authentication is often treated as orthogonal to schema design — bolted on via middleware, checked at the route layer. For a trading journal specifically, it isn't orthogonal: every trade row has to be unambiguously scoped to one user, with that scoping enforced at the database level (a non-nullable user_id foreign key with row-level constraints), not just filtered for in application queries. The reasoning is defensive: an application-layer bug that forgets a WHERE user_id = ? clause is a real, recurring class of error, and a schema that makes cross-user data leakage structurally harder — rather than relying on every query being written correctly — is worth the small amount of extra rigor at the modeling stage.</p>
+
+      <h2>What the analytics layer actually needs from the schema</h2>
+      <p>Analytics and reporting were treated as a first-class consumer of the schema, not an afterthought layered on top. Reports broken down by setup type, by session, by risk-adjusted outcome all become straightforward aggregate queries specifically because setup_type, session, and planned_risk exist as indexed columns on the trade record rather than being parsed out of a free-text notes field after the fact. This is the payoff for the earlier decision to require those fields at entry: the schema and the reporting feature are designed together, so the reporting feature never has to compensate for gaps the schema left behind.</p>
+
+      <h2>The general takeaway</h2>
+      <p>A trading journal's schema is really a bet about which questions the tool needs to answer months from now, made at the moment the first table is designed. Modeling only the outcome — what a broker export already gives you — produces a system that looks complete on day one and can't answer the questions that actually matter by month three. Modeling the plan alongside the outcome, enforcing the fields that matter at the point of entry rather than hoping they get filled in later, and designing the schema and the analytics feature together rather than sequentially, is what makes the difference between a journal and a spreadsheet with better formatting.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

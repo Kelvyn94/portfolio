@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelvin Njoroge Macharia — Developer · FinTech · Writer</title>
+<meta name="description" content="Kelvin Njoroge Macharia is a full-stack developer (Python, React, Node.js) with a background in financial-data analysis and freelance academic/technical writing. Based in Nairobi, working remote across timezones.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kelvin Njoroge Macharia — Developer · FinTech · Writer">
+<meta property="og:description" content="Full-stack developer (Python, React, Node.js) with a background in financial-data analysis and freelance academic/technical writing.">
+<meta property="og:image" content="assets/og-image.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #10161C;
+    --panel: #161F27;
+    --panel-2: #1C2731;
+    --paper: #F3EFE6;
+    --amber: #4E8FD8;
+    --amber-dim: #2E5F94;
+    --teal: #6FA8A0;
+    --line: rgba(78,143,216,0.18);
+    --text-dim: #93A0AA;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--amber); color:var(--ink);}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 32px;}
+
+  /* Ticker */
+  .ticker{
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:10px 0;
+  }
+  .ticker-track{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    animation: scroll 32s linear infinite;
+  }
+  .ticker-track span{ margin-right:48px; color:var(--text-dim); }
+  .ticker-track span b{ color:var(--amber); font-weight:600; }
+  @keyframes scroll{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track{ animation:none; }
+  }
+
+  /* Nav */
+  nav{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:28px 0;
+  }
+  .logo{font-family:'JetBrains Mono', monospace; font-size:14px; color:var(--amber); letter-spacing:0.04em;}
+  .nav-links{display:flex; gap:28px; font-size:14px; color:var(--text-dim);}
+  .nav-links a:hover{ color:var(--paper); }
+
+  /* Hero */
+  header.hero{ padding:64px 0 80px; position:relative; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; color:var(--amber); letter-spacing:0.14em;
+    text-transform:uppercase; margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:''; width:7px; height:7px; border-radius:50%;
+    background:var(--amber); box-shadow:0 0 8px var(--amber);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:clamp(2.4rem, 5.4vw, 4.1rem);
+    line-height:1.08;
+    max-width:820px;
+    color:var(--paper);
+  }
+  h1 em{ font-style:italic; color:var(--amber); }
+  .hero-sub{
+    margin-top:26px; max-width:600px; font-size:17.5px; color:var(--text-dim);
+  }
+  .hero-cta{ margin-top:38px; display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{
+    font-family:'JetBrains Mono', monospace; font-size:13px;
+    padding:13px 24px; border-radius:2px; letter-spacing:0.03em;
+    border:1px solid var(--line);
+    transition: all .18s ease;
+  }
+  .btn-primary{ background:var(--amber); color:var(--ink); border-color:var(--amber); font-weight:700;}
+  .btn-primary:hover{ background:#78AFE6; }
+  .btn-ghost{ color:var(--paper); }
+  .btn-ghost:hover{ border-color:var(--amber); color:var(--amber); }
+
+  /* Section shell */
+  section{ padding:70px 0; border-top:1px solid var(--line); }
+  .sec-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:40px; }
+  .sec-num{ font-family:'JetBrains Mono', monospace; color:var(--amber-dim); font-size:13px; }
+  .sec-title{ font-family:'Source Serif 4', serif; font-size:1.9rem; font-weight:600; }
+
+  /* Pillars */
+  .pillars{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .pillar{ background:var(--panel); padding:30px 26px; }
+  .pillar .tag{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--amber); letter-spacing:0.08em; text-transform:uppercase; }
+  .pillar h3{ font-family:'Source Serif 4', serif; font-size:1.3rem; margin:12px 0 10px; }
+  .pillar p{ font-size:14.5px; color:var(--text-dim); }
+
+  /* Projects */
+  .project{
+    display:grid; grid-template-columns:120px 1fr; gap:28px;
+    padding:26px 0; border-top:1px solid var(--line);
+  }
+  .project:first-of-type{ border-top:none; }
+  .project .idx{ font-family:'JetBrains Mono', monospace; color:var(--amber-dim); font-size:13px; padding-top:4px; }
+  .project h3{ font-family:'Source Serif 4', serif; font-size:1.4rem; margin-bottom:8px; }
+  .project p{ color:var(--text-dim); font-size:15px; max-width:600px; margin-bottom:12px; }
+  .stack{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .stack span{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal);
+    border:1px solid rgba(111,168,160,0.35); padding:4px 9px; border-radius:2px;
+  }
+  .project a.link{ font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--amber); border-bottom:1px solid var(--amber-dim); padding-bottom:2px;}
+  .project a.link:hover{ color:#78AFE6; }
+
+  /* Writing */
+  .writing-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .write-card{ background:var(--panel); border:1px solid var(--line); padding:24px; }
+  .write-card .tag{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--amber); text-transform:uppercase; letter-spacing:0.07em; }
+  .write-empty{
+    background:var(--panel); border:1px dashed var(--line); padding:40px 24px;
+    text-align:center;
+  }
+  .write-empty .tag{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--amber-dim); text-transform:uppercase; letter-spacing:0.07em; }
+  .write-empty p{ color:var(--text-dim); font-size:14.5px; margin-top:10px; }
+  .write-card h4{ font-family:'Source Serif 4', serif; font-size:1.15rem; margin:10px 0 8px; }
+  .write-card h4 a:hover{ color:var(--amber); }
+  .write-card p{ font-size:14px; color:var(--text-dim); }
+
+  /* Footer / contact */
+  footer{ padding:80px 0 60px; border-top:1px solid var(--line); }
+  footer h2{
+    font-family:'Source Serif 4', serif; font-size:clamp(1.8rem,4vw,2.6rem);
+    max-width:640px; margin-bottom:28px;
+  }
+  .contact-links{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:50px; }
+  .contact-links a{
+    font-family:'JetBrains Mono', monospace; font-size:13px;
+    border:1px solid var(--line); padding:10px 18px; border-radius:2px;
+  }
+  .contact-links a:hover{ border-color:var(--amber); color:var(--amber); }
+  .fine{ font-size:12.5px; color:var(--amber-dim); font-family:'JetBrains Mono', monospace; }
+
+  @media (max-width:760px){
+    .pillars{ grid-template-columns:1fr; }
+    .project{ grid-template-columns:1fr; }
+    .writing-grid{ grid-template-columns:1fr; }
+    .nav-links{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="ticker">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#writing">Writing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">Available for freelance work</div>
+      <h1>I build the tool <em>and</em> write the story behind it.</h1>
+      <p class="hero-sub">Full-stack developer (Python, React, Node.js) with a background in financial-data analysis and freelance academic/technical writing. I ship working software and explain it clearly — usually the same week.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#contact">Start a project</a>
+        <a class="btn btn-ghost" href="#work">See the work ↓</a>
+      </div>
+    </header>
+
+    <section id="pillars">
+      <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">What I bring</span></div>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="tag">Build</div>
+          <h3>Full-stack development</h3>
+          <p>HTML, CSS, JavaScript, React, Node.js, Python, FastAPI. Responsive UIs and working backends, not just mockups.</p>
+        </div>
+        <div class="pillar">
+          <div class="tag">Analyze</div>
+          <h3>FinTech & financial data</h3>
+          <p>Applied financial-data analysis and market research, translated into functioning tools — trading journals, data dashboards, reporting systems.</p>
+        </div>
+        <div class="pillar">
+          <div class="tag">Write</div>
+          <h3>Research & technical writing</h3>
+          <p>Freelance academic and technical writing across finance, STEM, and general subjects — structured, cited, and accurate.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">Selected work</span></div>
+
+      <div class="project">
+        <div class="idx">01</div>
+        <div>
+          <h3>Tradex — Trading Journal Application</h3>
+          <p>A web app for logging and reviewing trades, built with an understanding of what traders actually need to track — not a generic CRUD form.</p>
+          <div class="stack"><span>JavaScript</span><span>Web App</span><span>FinTech</span></div>
+          <a class="link" href="https://github.com/Kelvyn94/Tradex" target="_blank" rel="noopener">View repository →</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="idx">02</div>
+        <div>
+          <h3>Financial Intelligence System</h3>
+          <p>A Python-based system for processing and analyzing financial data — built to make raw market data usable, not just parsed.</p>
+          <div class="stack"><span>Python</span><span>Data Analysis</span><span>FinTech</span></div>
+          <a class="link" href="https://github.com/Kelvyn94/Financial-Intelligence-System" target="_blank" rel="noopener">View repository →</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="idx">03</div>
+        <div>
+          <h3>Front-End Challenge Portfolio</h3>
+          <p>A set of production-quality, responsive UI builds — blog preview cards, recipe pages, QR components, newsletter forms — completed via Frontend Mentor.</p>
+          <div class="stack"><span>HTML5</span><span>CSS3</span><span>Responsive Design</span></div>
+          <a class="link" href="https://www.frontendmentor.io/profile/Kelvyn94" target="_blank" rel="noopener">View profile →</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="idx">04</div>
+        <div>
+          <h3>CV Match Toolchain — Job Posting Analyzer</h3>
+          <p>Paste a resume and a job posting to get an instant match score against a 70+ term keyword dictionary, plus exactly which skills are missing — fully client-side, no backend, nothing leaves the browser. Built alongside a companion browser extension for one-click capture from job posting pages; the extension is source-available for a live walkthrough on request.</p>
+          <div class="stack"><span>JavaScript</span><span>Client-side</span><span>Keyword Matching</span></div>
+          <a class="link" href="https://github.com/Kelvyn94/cv-match-analyzer" target="_blank" rel="noopener">View repository →</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="idx">05</div>
+        <div>
+          <h3>Table Exporter — Chrome Extension</h3>
+          <p>Scans any webpage for HTML tables, auto-labels them using nearby headings, and exports clean, Excel/Sheets-ready CSV files in one click. Built with vanilla JavaScript on Manifest V3.</p>
+          <div class="stack"><span>JavaScript</span><span>Chrome Extension</span><span>Manifest V3</span></div>
+          <a class="link" href="https://github.com/Kelvyn94/table-exporter-extension" target="_blank" rel="noopener">View repository →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="writing">
+      <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">Writing samples</span></div>
+      <div class="writing-grid">
+        <div class="write-card">
+          <div class="tag">Research</div>
+          <h4><a href="writing/research-cross-market-divergence.html">Cross-Market Divergence as a Leading Signal</a></h4>
+          <p>A structured review of SMT divergence methodology across correlated forex and metals pairs.</p>
+        </div>
+        <div class="write-card">
+          <div class="tag">Research</div>
+          <h4><a href="writing/research-matching-methods-comparison.html">Rule-Based vs. Model-Based Matching</a></h4>
+          <p>A comparative framework for automated resume-to-job-description scoring.</p>
+        </div>
+        <div class="write-card">
+          <div class="tag">Technical</div>
+          <h4><a href="writing/technical-trading-journal-schema.html">Designing a Trading Journal Schema</a></h4>
+          <p>Architecture notes from building Tradex — what a trade record actually needs to hold.</p>
+        </div>
+        <div class="write-card">
+          <div class="tag">Technical</div>
+          <h4><a href="writing/technical-table-export-extension.html">From DOM to CSV</a></h4>
+          <p>Build notes on a Manifest V3 extension that finds, labels, and exports HTML tables reliably.</p>
+        </div>
+      </div>
+      <div style="margin-top:24px;">
+        <a class="link" style="font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--amber); border-bottom:1px solid var(--amber-dim); padding-bottom:2px;" href="writing/index.html">View all writing (10 samples) →</a>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <h2>Have something to build, analyze, or write? Let's talk.</h2>
+      <div class="contact-links">
+        <a href="mailto:kmacharia584@gmail.com">Email →</a>
+        <a href="https://www.linkedin.com/in/kelvin-njoroge-48993422b/" target="_blank" rel="noopener">LinkedIn →</a>
+        <a href="https://github.com/Kelvyn94" target="_blank" rel="noopener">GitHub →</a>
+        <a href="https://www.upwork.com/freelancers/~01b34df07b54e43de4" target="_blank" rel="noopener">Upwork →</a>
+        <a href="https://www.fiverr.com/kelvinmachar912" target="_blank" rel="noopener">Fiverr →</a>
+        <a href="https://www.freelancer.com/u/Kelvyn94" target="_blank" rel="noopener">Freelancer →</a>
+      </div>
+      <div class="fine">Nairobi, Kenya — Based remote, working across timezones.</div>
+    </footer>
+  </div>
+
+<script>
+  const items = [
+    "REACT", "NODE.JS", "PYTHON", "FASTAPI", "FINANCIAL DATA ANALYSIS",
+    "TRADING TOOLS", "ACADEMIC WRITING", "TECHNICAL WRITING", "RESPONSIVE UI",
+    "GIT / GITHUB", "OPEN SOURCE"
+  ];
+  const track = document.getElementById('tickerTrack');
+  function renderTicker(){
+    let html = '';
+    for(let r=0; r<2; r++){
+      items.forEach(i => { html += `<span><b>${i}</b></span>`; });
+    }
+    track.innerHTML = html;
+  }
+  renderTicker();
+</script>
+</body>
+</html>

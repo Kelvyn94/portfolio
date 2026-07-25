@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Data-Quality Problem in Retail Trading Journals — Kelvin Njoroge Macharia</title>
+<meta name="description" content="Why most retail traders can't actually analyze their own performance, and what a journal's schema has to get right first.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Research — Financial Markets</div>
+    <h1>The Data-Quality Problem in Retail Trading Journals</h1>
+    <div class="article-meta">~800 words · Research</div>
+
+    <div class="article-body">
+      <p class="lede">Ask a retail trader how their last fifty trades performed and most can give a rough sense of whether the month felt good or bad. Ask them to break that down by setup type, by session, by risk taken relative to the stop distance, and the answer usually falls apart. That's not a discipline problem. It's a data-quality problem, and it starts with what gets recorded, not with how hard someone tries to review it afterward.</p>
+
+      <h2>The broker dashboard isn't a journal</h2>
+      <p>A broker's trade history answers "what happened" — entry, exit, size, P&L. It doesn't answer "why," and why is the only question a journal actually needs to answer. Without a recorded setup type, a stated thesis, or the intended stop and target at the moment of entry, every trade becomes indistinguishable from every other trade the moment the position closes. A trader reviewing three months of broker history is really just reviewing a list of outcomes with no attached reasoning — which makes it impossible to tell whether a losing month came from a flawed process applied correctly, or a sound process applied inconsistently. Those require completely different fixes, and a P&L number alone can't tell them apart.</p>
+
+      <h2>What has to be captured at entry, not reconstructed later</h2>
+      <p>Three fields matter more than the rest, and all three have to be recorded at the moment of entry, because they cannot be reliably reconstructed afterward:</p>
+      <ul>
+        <li><strong>The setup or thesis</strong> — what pattern, level, or condition triggered the trade. Recorded after the fact, this quietly rewrites itself to match the outcome: winning trades get remembered as clean textbook setups, losing trades get remembered as mistakes, even when the underlying reasoning was identical.</li>
+        <li><strong>The planned risk</strong> — stop distance and position size relative to account equity, at entry. Traders routinely widen a mental stop as a losing trade develops; if the "risk taken" field is filled in after the trade closes, it measures what actually happened, not what was planned, which defeats the entire point of tracking risk discipline.</li>
+        <li><strong>The session and instrument context</strong> — time of day, volatility regime, any scheduled news nearby. Performance by session is one of the most consistently informative cuts in a journal, but only if session is a first-class field rather than something inferred later from a timestamp nobody looks at.</li>
+      </ul>
+
+      <h2>Why this has to be structural, not a habit</h2>
+      <p>Telling a trader to "just be more disciplined about journaling" doesn't work at scale, for the same reason telling someone to "just remember to floss" doesn't reliably change behavior. The fix has to be built into the tool: the entry form should require the setup and planned risk fields before a trade can be logged, not offer them as optional metadata filled in whenever motivation allows. A trading journal application designed around this — capturing thesis and risk parameters as required fields at entry, not as an afterthought — produces a materially different dataset than a spreadsheet where those columns are usually left blank three weeks in.</p>
+
+      <h2>What good data quality actually unlocks</h2>
+      <p>Once setup, planned risk, and session are consistently captured, the analysis that traders actually want — performance broken down by setup type, by session, by how closely realized risk matched planned risk — becomes a straightforward query instead of an archaeology project through months of memory and screenshots. That's the real value of a purpose-built journal over a generic spreadsheet or a broker's export: not a nicer interface, but a schema that forces the right fields to exist in the first place, so the review that happens a month later has something honest to work with.</p>
+      <p>The uncomfortable implication is that most traders who feel like they "journal" are really just archiving outcomes. A journal that only stores what happened, without why it happened and what was planned before it happened, can produce charts and win rates that look like analysis but can't actually answer the one question that matters: was this month bad because of the market, or because of the process — and if it's the process, which part of it.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>

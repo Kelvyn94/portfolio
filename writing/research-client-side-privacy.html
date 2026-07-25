@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client-Side Computation and Data Privacy — Kelvin Njoroge Macharia</title>
+<meta name="description" content="A short review of the trade-offs when a web tool processes sensitive data entirely in the browser instead of a server.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/writing.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <div class="logo">KNM_//</div>
+      <a class="back-link" href="index.html">← All writing</a>
+    </nav>
+  </div>
+
+  <div class="article-shell">
+    <div class="article-tag">Research — Applied Privacy</div>
+    <h1>Client-Side Computation and Data Privacy: A Review of the Trade-offs</h1>
+    <div class="article-meta">~800 words · Research</div>
+
+    <div class="article-body">
+      <p class="lede">"Your data never leaves your browser" is a common claim on small web tools, and it's usually true in a narrow, technical sense: the computation happens in JavaScript running on the user's machine, with no server request in the network tab to prove otherwise. What that claim is actually worth depends on what the tool is doing with the data, and that's worth reviewing directly rather than taking the tagline at face value.</p>
+
+      <h2>What client-side actually guarantees</h2>
+      <p>When a tool is built as a single self-contained page — no backend, no API calls for the core function — the guarantee is structural, not promissory. There's no server to send a resume, a trade log, or a scraped table to, because there's no server in the request path at all. This is a stronger privacy property than a server-side tool that promises not to log or retain data, because it doesn't depend on trusting an operator's stated policy; it depends on there being no code path capable of sending the data anywhere in the first place. A user (or a technically inclined reviewer) can verify this directly by watching the network tab while using the tool: no outbound requests during core operation means the claim is checkable, not just asserted.</p>
+
+      <h2>Where the guarantee ends</h2>
+      <p>The guarantee covers what happens during use. It says nothing about three adjacent risks that client-side tools can still carry if they're not deliberately avoided:</p>
+      <ul>
+        <li><strong>Third-party scripts.</strong> A page that loads analytics, ads, or a font from an external host is still making outbound requests — just not with the sensitive data, usually. But "usually" is doing a lot of work in that sentence; a badly configured analytics snippet that captures form input or console logs can leak exactly the data the architecture was supposed to protect. A genuinely private client-side tool keeps its third-party footprint to the minimum needed (fonts, in this case) and nothing that touches the DOM where sensitive content lives.</li>
+        <li><strong>Browser storage.</strong> LocalStorage and IndexedDB don't leave the device, but they do persist. A tool that caches a pasted resume or a scraped table locally "for convenience" is trading a small UX improvement for a real, if narrow, risk: shared or public machines, browser-extension-based data harvesting, and forensic recovery are all real world attack surfaces that a purely in-memory, non-persistent design avoids entirely.</li>
+        <li><strong>The extension permission model, where applicable.</strong> A browser extension that reads page content to do its job — scanning a page for tables, say — is operating with more access than a plain webpage, by necessity. The privacy property that matters there is narrower and more specific: does the extension's own code send that content anywhere, or does it stay in the browser's extension context and get handed directly to the user as a download? Manifest V3's permission model makes the scope of access visible to the user at install time, which is a meaningful check, but it doesn't substitute for the code itself not shipping the data elsewhere.</li>
+      </ul>
+
+      <h2>Why this matters more for some tools than others</h2>
+      <p>Not all client-side tools carry the same stakes. A unit converter processing client-side is a convenience choice. A tool that processes a resume, a job posting, or exported financial or tabular data is processing something a user has a real interest in keeping off third-party servers — not necessarily because any individual document is sensitive, but because the aggregate pattern of what someone is job-searching for, or what data they're pulling out of internal dashboards, is the kind of behavioral signal that's valuable to advertisers and unpleasant to have collected without clear consent. For tools in that category, "no backend" isn't a cost-saving implementation detail, it's the actual privacy feature being sold, and it should be built and verified as one — not asserted in a README and left unchecked.</p>
+
+      <h2>The honest framing</h2>
+      <p>"Client-side" is a real, verifiable privacy property, not marketing language, as long as it's paired with a minimal and deliberate approach to storage and third-party scripts. The right way to evaluate a tool's privacy claim isn't to read its description — it's to open the network tab, use the tool, and see what actually leaves the machine. Tools built with that scrutiny in mind, rather than added after the fact, tend to hold up; tools where "your data stays local" was a slogan added late tend not to.</p>
+    </div>
+
+    <div class="article-footer">
+      <a class="cta" href="index.html">← All writing</a>
+      <a class="cta" href="../index.html#work">See the related project →</a>
+    </div>
+  </div>
+</body>
+</html>
