@@ -13,7 +13,9 @@ portfolio/
 ├── assets/
 │   ├── favicon.svg            # tab icon
 │   ├── og-image.svg           # social share preview image
-│   └── writing.css            # shared stylesheet for /writing pages
+│   ├── writing.css            # shared stylesheet for /writing pages
+│   ├── screenshots/           # project screenshots (pulled from each repo's README)
+│   └── videos/                # demo recordings for the two extension projects
 └── writing/
     ├── index.html             # writing hub — lists all samples
     ├── research-*.html        # 5 research/analytical samples

@@ -138,6 +138,15 @@
   }
   .project a.link{ font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--amber); border-bottom:1px solid var(--amber-dim); padding-bottom:2px;}
   .project a.link:hover{ color:#78AFE6; }
+  .project-media{
+    margin-top:16px; margin-bottom:14px; border:1px solid var(--line); border-radius:2px;
+    overflow:hidden; background:var(--panel-2); max-width:600px;
+  }
+  .project-media img, .project-media video{ display:block; width:100%; height:auto; }
+  .project-media-label{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-dim);
+    text-transform:uppercase; letter-spacing:0.06em; padding:8px 12px; border-top:1px solid var(--line);
+  }
 
   /* Writing */
   .writing-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
@@ -231,6 +240,9 @@
           <h3>Tradex — Trading Journal Application</h3>
           <p>A web app for logging and reviewing trades, built with an understanding of what traders actually need to track — not a generic CRUD form.</p>
           <div class="stack"><span>JavaScript</span><span>Web App</span><span>FinTech</span></div>
+          <div class="project-media">
+            <img src="assets/screenshots/tradex.png" alt="Tradex login screen — trading journal app with performance tracking, analytics, and security highlights" loading="lazy">
+          </div>
           <a class="link" href="https://github.com/Kelvyn94/Tradex" target="_blank" rel="noopener">View repository →</a>
         </div>
       </div>
@@ -241,6 +253,9 @@
           <h3>Financial Intelligence System</h3>
           <p>A Python-based system for processing and analyzing financial data — built to make raw market data usable, not just parsed.</p>
           <div class="stack"><span>Python</span><span>Data Analysis</span><span>FinTech</span></div>
+          <div class="project-media">
+            <img src="assets/screenshots/financial-intelligence-system.png" alt="Financial Intelligence System dashboard — ticker information, price performance, and AI copilot panel" loading="lazy">
+          </div>
           <a class="link" href="https://github.com/Kelvyn94/Financial-Intelligence-System" target="_blank" rel="noopener">View repository →</a>
         </div>
       </div>
@@ -261,6 +276,12 @@
           <h3>CV Match Toolchain — Job Posting Analyzer</h3>
           <p>Paste a resume and a job posting to get an instant match score against a 70+ term keyword dictionary, plus exactly which skills are missing — fully client-side, no backend, nothing leaves the browser. Built alongside a companion browser extension for one-click capture from job posting pages; the extension is source-available for a live walkthrough on request.</p>
           <div class="stack"><span>JavaScript</span><span>Client-side</span><span>Keyword Matching</span></div>
+          <div class="project-media">
+            <video controls preload="metadata" poster="assets/screenshots/cv-match-analyzer.png">
+              <source src="assets/videos/cv-match-analyzer-demo.mp4" type="video/mp4">
+            </video>
+            <div class="project-media-label">Demo — paste CV + job posting, get an instant match score</div>
+          </div>
           <a class="link" href="https://github.com/Kelvyn94/cv-match-analyzer" target="_blank" rel="noopener">View repository →</a>
         </div>
       </div>
@@ -271,6 +292,12 @@
           <h3>Table Exporter — Chrome Extension</h3>
           <p>Scans any webpage for HTML tables, auto-labels them using nearby headings, and exports clean, Excel/Sheets-ready CSV files in one click. Built with vanilla JavaScript on Manifest V3.</p>
           <div class="stack"><span>JavaScript</span><span>Chrome Extension</span><span>Manifest V3</span></div>
+          <div class="project-media">
+            <video controls preload="metadata" poster="assets/screenshots/table-exporter.png">
+              <source src="assets/videos/table-exporter-demo.mp4" type="video/mp4">
+            </video>
+            <div class="project-media-label">Demo — scanning a live page and exporting a table to CSV</div>
+          </div>
           <a class="link" href="https://github.com/Kelvyn94/table-exporter-extension" target="_blank" rel="noopener">View repository →</a>
         </div>
       </div>
