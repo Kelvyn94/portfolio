@@ -241,7 +241,7 @@
           <p>A web app for logging and reviewing trades, built with an understanding of what traders actually need to track — not a generic CRUD form.</p>
           <div class="stack"><span>JavaScript</span><span>Web App</span><span>FinTech</span></div>
           <div class="project-media">
-            <video controls preload="metadata" poster="assets/screenshots/tradex.png">
+            <video controls muted playsinline preload="metadata" poster="assets/screenshots/tradex.png">
               <source src="assets/videos/tradex-demo.mp4" type="video/mp4">
             </video>
             <div class="project-media-label">Demo — logging and reviewing trades in Tradex</div>
@@ -280,7 +280,7 @@
           <p>Paste a resume and a job posting to get an instant match score against a 70+ term keyword dictionary, plus exactly which skills are missing — fully client-side, no backend, nothing leaves the browser. Built alongside a companion browser extension for one-click capture from job posting pages; the extension is source-available for a live walkthrough on request.</p>
           <div class="stack"><span>JavaScript</span><span>Client-side</span><span>Keyword Matching</span></div>
           <div class="project-media">
-            <video controls preload="metadata" poster="assets/screenshots/cv-match-analyzer.png">
+            <video controls muted playsinline preload="metadata" poster="assets/screenshots/cv-match-analyzer.png">
               <source src="assets/videos/cv-match-analyzer-demo.mp4" type="video/mp4">
             </video>
             <div class="project-media-label">Demo — paste CV + job posting, get an instant match score</div>
@@ -296,7 +296,7 @@
           <p>Scans any webpage for HTML tables, auto-labels them using nearby headings, and exports clean, Excel/Sheets-ready CSV files in one click. Built with vanilla JavaScript on Manifest V3.</p>
           <div class="stack"><span>JavaScript</span><span>Chrome Extension</span><span>Manifest V3</span></div>
           <div class="project-media">
-            <video controls preload="metadata" poster="assets/screenshots/table-exporter.png">
+            <video controls muted playsinline preload="metadata" poster="assets/screenshots/table-exporter.png">
               <source src="assets/videos/table-exporter-demo.mp4" type="video/mp4">
             </video>
             <div class="project-media-label">Demo — scanning a live page and exporting a table to CSV</div>
@@ -364,6 +364,18 @@
     track.innerHTML = html;
   }
   renderTicker();
+
+  const projectVideos = document.querySelectorAll('.project-media video');
+  if (projectVideos.length && 'IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting && !entry.target.paused) {
+          entry.target.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+    projectVideos.forEach(v => videoObserver.observe(v));
+  }
 </script>
 </body>
 </html>
