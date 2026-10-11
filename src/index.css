@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-navy-900: #0b1220;
+  --color-navy-800: #111a2e;
+  --color-navy-700: #1a2540;
+  --color-paper: #f6f3ec;
+  --color-accent: #e0883a;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-paper-dark: var(--page-alt);
+  --color-ink: var(--fg);
+  --color-accent-deep: var(--accent-text);
+  --color-card: var(--card);
+}
+
+:root {
+  color-scheme: light;
+  --page: #f6f3ec;
+  --page-alt: #ece7da;
+  --fg: #0f1626;
+  --accent-text: #a8560f;
+  --card: rgb(255 255 255 / 0.6);
+}
+
+:root.dark {
+  color-scheme: dark;
+  --page: #111a2e;
+  --page-alt: #16213a;
+  --fg: #f2efe8;
+  --accent-text: #e0883a;
+  --card: rgb(255 255 255 / 0.05);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--page);
+    color: var(--fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
