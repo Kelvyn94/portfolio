@@ -71,7 +71,7 @@ export default function Contact() {
                 <span className="text-sm uppercase tracking-[0.2em] text-ink/60">
                   {r.label}
                 </span>
-                <span className="flex items-center gap-2 break-all font-display text-xl sm:text-2xl">
+                <span className="flex items-center gap-2 break-all font-display text-lg sm:text-xl">
                   {r.value}
                   <ArrowUpRight
                     className="h-5 w-5 shrink-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"

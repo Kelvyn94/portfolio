@@ -9,7 +9,7 @@ export default function About() {
           eyebrow="About"
           title="An IT graduate who likes building useful things"
         />
-        <div className="space-y-5 text-lg text-ink/80">
+        <div className="space-y-5 text-base text-ink/80">
           {about.map((p) => (
             <p key={p}>{p}</p>
           ))}

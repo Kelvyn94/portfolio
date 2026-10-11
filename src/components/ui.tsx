@@ -57,9 +57,11 @@ export function SectionHeading({
       >
         {eyebrow}
       </p>
-      <h2 className="mt-3 font-display text-3xl sm:text-4xl">{title}</h2>
+      <h2 className="mt-3 font-display text-2xl sm:text-3xl">{title}</h2>
       {intro && (
-        <p className={`mt-4 text-lg ${dark ? "text-paper/70" : "text-ink/70"}`}>
+        <p
+          className={`mt-4 text-base ${dark ? "text-paper/70" : "text-ink/70"}`}
+        >
           {intro}
         </p>
       )}

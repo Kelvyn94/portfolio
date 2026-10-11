@@ -15,7 +15,7 @@ export default function Hero() {
             {profile.role}
           </p>
           <h1
-            className="rise mt-5 font-display text-4xl leading-[1.08] sm:text-5xl lg:text-6xl"
+            className="rise mt-5 font-display text-3xl leading-[1.1] sm:text-4xl lg:text-5xl"
             style={{ animationDelay: "80ms" }}
           >
             {profile.headline}
